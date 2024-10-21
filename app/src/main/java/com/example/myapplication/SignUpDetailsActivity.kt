@@ -7,15 +7,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class CreateAccountActivity2 : AppCompatActivity(){
+class SignUpDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.create_account_screen2)
-        val fullNameEditText = findViewById<EditText>(R.id.fullname)
+        setContentView(R.layout.sign_up_details)
+        val fullNameEditText = findViewById<EditText>(R.id.fullName)
         val validEmailEditText = findViewById<EditText>(R.id.validEmail)
         val phoneNumberEditText = findViewById<EditText>(R.id.phoneNumber)
         val strongPasswordEditText = findViewById<EditText>(R.id.strongPassword)
-        val termsAndConditionsCheckBox = findViewById<CheckBox>(R.id.Agreement)
+        val termsAndConditionsCheckBox = findViewById<CheckBox>(R.id.agreementCheck)
         val nextButton = findViewById<Button>(R.id.btnNext)
 
         nextButton.setOnClickListener {
@@ -28,10 +28,10 @@ class CreateAccountActivity2 : AppCompatActivity(){
             if (isTermsAccepted) {
                 Toast.makeText(this, "You have successfully registered!", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Please accept the Terms and Conditions", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please accept the Terms and Conditions", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
-
 
 
     }
