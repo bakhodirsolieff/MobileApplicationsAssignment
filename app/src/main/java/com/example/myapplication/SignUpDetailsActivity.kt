@@ -1,6 +1,8 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -32,7 +34,11 @@ class SignUpDetailsActivity : AppCompatActivity() {
                     .show()
             }
         }
-
+        val lg = findViewById<View>(R.id.tvRegisterNow)
+        lg.setOnClickListener{
+            val goToReg = Intent(this, CreateAccountActivity::class.java)
+            startActivity(goToReg)
+        }
 
     }
 }
