@@ -15,41 +15,36 @@
         android:layout_marginStart="110dp"
         android:layout_marginTop="50dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/imagee"
+        android:src="@drawable/bg_imagee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/getStarted"
+        style="@style/GetStarted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-100dp"
-        android:fontFamily="sans-serif-medium"
         android:text="Get Started"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageTop" />
 
     <TextView
         android:id="@+id/subHead"
+        style="@style/SubtitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-1dp"
         android:text="by creating a free account"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/getStarted" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputFullName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
@@ -58,12 +53,12 @@
         app:boxStrokeColor="@color/purple_500"
         app:boxStrokeWidth="1dp"
         app:boxStrokeWidthFocused="2dp"
+        app:endIconDrawable="@drawable/ic_user"
+        app:endIconMode="custom"
+        app:endIconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subHead"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/user"
-        app:endIconTint="@color/black">
+        app:layout_constraintTop_toBottomOf="@id/subHead">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fullName"
@@ -76,8 +71,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputValidEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="32dp"
@@ -86,12 +80,12 @@
         app:boxStrokeColor="@color/purple_500"
         app:boxStrokeWidth="1dp"
         app:boxStrokeWidthFocused="2dp"
+        app:endIconDrawable="@drawable/ic_mail"
+        app:endIconMode="custom"
+        app:endIconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputFullName"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/mail"
-        app:endIconTint="@color/black">
+        app:layout_constraintTop_toBottomOf="@id/textInputFullName">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/validEmail"
@@ -104,8 +98,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputPhoneNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="32dp"
@@ -114,13 +107,12 @@
         app:boxStrokeColor="@color/purple_500"
         app:boxStrokeWidth="1dp"
         app:boxStrokeWidthFocused="2dp"
+        app:endIconDrawable="@drawable/ic_smartphone"
+        app:endIconMode="custom"
+        app:endIconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputValidEmail"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/smartphone"
-        app:endIconTint="@color/black"
-        >
+        app:layout_constraintTop_toBottomOf="@id/textInputValidEmail">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneNumber"
@@ -133,8 +125,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputStrongPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="32dp"
@@ -143,12 +134,12 @@
         app:boxStrokeColor="@color/purple_500"
         app:boxStrokeWidth="1dp"
         app:boxStrokeWidthFocused="2dp"
+        app:endIconDrawable="@drawable/ic_lock"
+        app:endIconMode="custom"
+        app:endIconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputPhoneNumber"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/lock"
-        app:endIconTint="@color/black">
+        app:layout_constraintTop_toBottomOf="@id/textInputPhoneNumber">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/strongPassword"
@@ -161,27 +152,23 @@
 
     <CheckBox
         android:id="@+id/agreementCheck"
+        style="@style/ForCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="0dp"
         android:buttonTint="@color/black"
         android:text="By checking the box you agree to our Terms and Conditions."
-        android:textColor="@color/black"
-        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputStrongPassword" />
 
     <Button
         android:id="@+id/btnNext"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        style="@style/PrimaryButton"
         android:layout_marginStart="34dp"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="34dp"
-        android:backgroundTint="@color/purple_500"
         android:text="@string/next_button"
-        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/agreementCheck" />

@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 class SignUpDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.sign_up_details)
+        setContentView(R.layout.activity_sign_up_page)
         val fullNameEditText = findViewById<EditText>(R.id.fullName)
         val validEmailEditText = findViewById<EditText>(R.id.validEmail)
         val phoneNumberEditText = findViewById<EditText>(R.id.phoneNumber)
@@ -34,8 +34,8 @@ class SignUpDetailsActivity : AppCompatActivity() {
                     .show()
             }
         }
-        val lg = findViewById<View>(R.id.tvRegisterNow)
-        lg.setOnClickListener{
+        val loginButton = findViewById<View>(R.id.tvRegisterNow)
+        loginButton .setOnClickListener{
             val goToReg = Intent(this, CreateAccountActivity::class.java)
             startActivity(goToReg)
         }

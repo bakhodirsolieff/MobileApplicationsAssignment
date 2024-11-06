@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 class CreateAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.create_account_screen1)
+        setContentView(R.layout.activity_create_account)
 
         val emailField = findViewById<EditText>(R.id.etEmail)
         val passwordField = findViewById<EditText>(R.id.etPassword)
@@ -42,8 +42,8 @@ class CreateAccountActivity : AppCompatActivity() {
 
             Toast.makeText(this, "Signed in", Toast.LENGTH_SHORT).show()
         }
-        val lg = findViewById<View>(R.id.tvRegisterNoww)
-        lg.setOnClickListener{
+        val loginButton = findViewById<View>(R.id.tvRegisterNoww)
+        loginButton .setOnClickListener{
             val goToReg = Intent(this, SignUpDetailsActivity::class.java)
             startActivity(goToReg)
         }

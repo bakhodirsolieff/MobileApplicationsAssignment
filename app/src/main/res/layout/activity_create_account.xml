@@ -16,7 +16,7 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="50dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/imagee"
+        android:src="@drawable/bg_imagee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,48 +24,44 @@
 
     <TextView
         android:id="@+id/tvWelcomeBack"
+        style="@style/WelcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-100dp"
         android:fontFamily="sans-serif-medium"
         android:text="Welcome back"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageTop" />
 
     <TextView
         android:id="@+id/tvSignInMessage"
+        style="@style/SubtitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="sign in to access your account"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvWelcomeBack" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="32dp"
         android:hint="Email"
         app:boxBackgroundMode="outline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSignInMessage"
         app:boxStrokeColor="@color/purple_500"
         app:boxStrokeWidth="1dp"
         app:boxStrokeWidthFocused="2dp"
+        app:endIconDrawable="@drawable/ic_mail"
         app:endIconMode="custom"
-        app:endIconDrawable="@drawable/mail"
-        app:endIconTint="@color/black">
+        app:endIconTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSignInMessage">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
@@ -78,22 +74,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextInputLayout"
         android:layout_marginStart="32dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="32dp"
         android:hint="Password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputEmail"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/purple_500"
         app:boxStrokeWidth="1.0dp"
         app:boxStrokeWidthFocused="2dp"
+        app:endIconDrawable="@drawable/ic_lock"
         app:endIconMode="custom"
-        app:endIconDrawable="@drawable/lock"
-        app:endIconTint="@color/black">
+        app:endIconTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputEmail">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
@@ -106,19 +101,19 @@
 
     <CheckBox
         android:id="@+id/cbRememberMe"
+        style="@style/SmallRegularText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:layout_marginTop="5dp"
         android:buttonTint="@color/black"
         android:text="Remember me"
-        android:textColor="@color/black"
-        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textInputPassword" />
 
     <TextView
         android:id="@+id/tvForgotPassword"
+        style="@style/SmallLinkText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
@@ -131,39 +126,34 @@
 
     <Button
         android:id="@+id/btnNext"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        style="@style/PrimaryButton"
         android:layout_marginStart="34dp"
         android:layout_marginTop="120dp"
         android:layout_marginEnd="34dp"
-        android:backgroundTint="@color/purple_500"
         android:text="@string/next_button"
-        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cbRememberMe" />
 
     <TextView
         android:id="@+id/tvNewMember"
+        style="@style/SmallRegularText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
         android:layout_marginTop="16dp"
         android:text="New Member? "
-        android:textColor="@color/black"
-        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnNext" />
 
     <TextView
         android:id="@+id/tvRegisterNoww"
+        style="@style/SmallLinkText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="16dp"
         android:text="Register now"
-        android:textColor="@color/purple_500"
-        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/tvNewMember"
         app:layout_constraintTop_toBottomOf="@id/btnNext" />
