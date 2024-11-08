@@ -10,9 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class CreateAccountActivity : AppCompatActivity() {
+
+    private lateinit var credentialsManager: CredentialsManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
+
+        credentialsManager = CredentialsManager()
 
         val emailField = findViewById<EditText>(R.id.etEmail)
         val passwordField = findViewById<EditText>(R.id.etPassword)
@@ -22,31 +27,31 @@ class CreateAccountActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             val email = emailField.text.toString().trim()
             val password = passwordField.text.toString().trim()
-
-            if (email.isEmpty()) {
-                emailField.error = "Email is required"
-                return@setOnClickListener
-            }
-
-            if (password.isEmpty()) {
-                passwordField.error = "Password is required"
-                return@setOnClickListener
-            }
-
-            if (password.length < 6) {
-                passwordField.error = "Password must be at least 6 characters"
-                return@setOnClickListener
-            }
-
             val rememberMe = rememberMeCheckbox.isChecked
 
-            Toast.makeText(this, "Signed in", Toast.LENGTH_SHORT).show()
+            when {
+                email.isEmpty() -> emailField.error = "Email is required"
+                !credentialsManager.isValidEmail(email) -> emailField.error = "Invalid email format"
+                password.isEmpty() -> passwordField.error = "Password is required"
+                !credentialsManager.isValidPassword(password) -> passwordField.error =
+                    "Password must be at least 8 characters"
+
+                !rememberMe -> Toast.makeText(
+                    this,
+                    "Please check the 'Remember me' box",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                else -> {
+                    Toast.makeText(this, "Signed in", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
         val loginButton = findViewById<View>(R.id.tvRegisterNoww)
-        loginButton .setOnClickListener{
+        loginButton.setOnClickListener {
             val goToReg = Intent(this, SignUpDetailsActivity::class.java)
             startActivity(goToReg)
         }
     }
-
 }
