@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 class CredentialsManager {
-
     private val emailPattern = ("[a-zA-Z0-9\\+\\%\\-\\+]{1,256}" +
             "\\@" +
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,64}" +
@@ -26,8 +25,15 @@ class CredentialsManager {
         return fullName.isNotEmpty()
     }
 
+    fun isHardcodedCredentials(email: String, password: String): Boolean {
+        val hardcodedEmail = "test@te.st"
+        val hardcodedPassword = "1234"
+        return email == hardcodedEmail && password == hardcodedPassword
+    }
+
     fun isValidPhoneNumber(phoneNumber: String): Boolean {
-        return phoneNumber.isNotEmpty() && phoneNumber.length >= 9
+        val phonePattern = "^[0-9]{9,}$".toRegex()
+        return phoneNumber.matches(phonePattern)
     }
 
     fun isTermsAccepted(isChecked: Boolean): Boolean {
