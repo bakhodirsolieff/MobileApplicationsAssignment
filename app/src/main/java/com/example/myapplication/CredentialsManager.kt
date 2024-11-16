@@ -10,7 +10,7 @@ class CredentialsManager {
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,25}" +
             ")+").toRegex()
 
-    fun isValidEmail(email: String): Boolean {
+    fun isEmailValid(email: String): Boolean {
         return email.matches(emailPattern)
     }
 
@@ -19,7 +19,7 @@ class CredentialsManager {
     }
 
     fun validateCredentials(email: String, password: String, isCheckboxChecked: Boolean): Boolean {
-        return isValidEmail(email) && isValidPassword(password) && isCheckboxChecked
+        return isEmailValid(email) && isValidPassword(password) && isCheckboxChecked
     }
 
     fun isValidFullName(fullName: String): Boolean {
@@ -42,7 +42,7 @@ class CredentialsManager {
         isTermsAccepted: Boolean
     ): Boolean {
         return isValidFullName(fullName) &&
-                isValidEmail(email) &&
+                isEmailValid(email) &&
                 isValidPhoneNumber(phoneNumber) &&
                 isValidPassword(password) &&
                 isTermsAccepted(isTermsAccepted)

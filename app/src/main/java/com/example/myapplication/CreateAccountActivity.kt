@@ -10,14 +10,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class CreateAccountActivity : AppCompatActivity() {
-
-    private lateinit var credentialsManager: CredentialsManager
+    private val credentialsManager: CredentialsManager = CredentialsManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
-
-        credentialsManager = CredentialsManager()
 
         val emailField = findViewById<EditText>(R.id.etEmail)
         val passwordField = findViewById<EditText>(R.id.etPassword)
@@ -30,21 +27,20 @@ class CreateAccountActivity : AppCompatActivity() {
             val rememberMe = rememberMeCheckbox.isChecked
 
             when {
-                email.isEmpty() -> emailField.error = "Email is required"
-                !credentialsManager.isValidEmail(email) -> emailField.error = "Invalid email format"
-                password.isEmpty() -> passwordField.error = "Password is required"
-                !credentialsManager.isValidPassword(password) -> passwordField.error =
-                    "Password must be at least 8 characters"
+                email.isEmpty() -> setError(emailField, R.string.error_email_required)
+                !credentialsManager.isEmailValid(email) -> setError(
+                    emailField,
+                    R.string.error_invalid_email
+                )
 
-                !rememberMe -> Toast.makeText(
-                    this,
-                    "Please check the 'Remember me' box",
-                    Toast.LENGTH_SHORT
-                ).show()
+                password.isEmpty() -> setError(passwordField, R.string.error_password_required)
+                !credentialsManager.isValidPassword(password) -> setError(
+                    passwordField,
+                    R.string.error_password_invalid
+                )
 
-                else -> {
-                    Toast.makeText(this, "Signed in", Toast.LENGTH_SHORT).show()
-                }
+                !rememberMe -> showToast(R.string.error_remember_me_required)
+                else -> showToast(R.string.success_signed_in)
             }
         }
 
@@ -54,4 +50,13 @@ class CreateAccountActivity : AppCompatActivity() {
             startActivity(goToReg)
         }
     }
+
+    private fun setError(field: EditText, errorResId: Int) {
+        field.error = getString(errorResId)
+    }
+
+    private fun showToast(messageResId: Int) {
+        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
 }

@@ -33,50 +33,27 @@ class SignUpDetailsActivity : AppCompatActivity() {
 
             when {
                 !credentialsManager.isValidFullName(fullName) -> {
-                    fullNameEditText.error = "Full Name is required"
+                    showError(fullNameEditText, getString(R.string.error_name_required))
                 }
 
-                !credentialsManager.isValidEmail(email) -> {
-                    validEmailEditText.error = "Invalid email format"
+                !credentialsManager.isEmailValid(email) -> {
+                    showError(validEmailEditText, getString(R.string.error_invalid_email))
                 }
 
                 !credentialsManager.isValidPhoneNumber(phone) -> {
-                    phoneNumberEditText.error = "Phone number must be at least 10 digits"
+                    showError(phoneNumberEditText, getString(R.string.error_phone_number_required))
                 }
 
                 !credentialsManager.isValidPassword(password) -> {
-                    strongPasswordEditText.error = "Password must be at least 8 characters"
+                    showError(strongPasswordEditText, getString(R.string.error_password_invalid))
                 }
 
                 !credentialsManager.isTermsAccepted(isTermsAccepted) -> {
-                    Toast.makeText(
-                        this,
-                        "Please accept the Terms and Conditions",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast(getString(R.string.error_terms_and_conditions_required))
                 }
 
                 else -> {
-                    if (credentialsManager.ValidateCredentialsForSignUp(
-                            fullName,
-                            email,
-                            phone,
-                            password,
-                            isTermsAccepted
-                        )
-                    ) {
-                        Toast.makeText(
-                            this,
-                            "You have successfully registered!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Registration failed due to invalid inputs",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    validateAndProceed(fullName, email, phone, password, isTermsAccepted)
                 }
             }
         }
@@ -85,5 +62,36 @@ class SignUpDetailsActivity : AppCompatActivity() {
             val goToReg = Intent(this, CreateAccountActivity::class.java)
             startActivity(goToReg)
         }
+    }
+
+    private fun validateAndProceed(
+        fullName: String,
+        email: String,
+        phone: String,
+        password: String,
+        isTermsAccepted: Boolean
+    ) {
+        val message = if (
+            credentialsManager.ValidateCredentialsForSignUp(
+                fullName,
+                email,
+                phone,
+                password,
+                isTermsAccepted
+            )
+        ) {
+            getString(R.string.success_signed_in)
+        } else {
+            getString(R.string.error_email_required)
+        }
+        showToast(message)
+    }
+
+    private fun showError(editText: EditText, message: String) {
+        editText.error = message
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

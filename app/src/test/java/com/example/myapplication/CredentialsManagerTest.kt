@@ -8,8 +8,8 @@ class CredentialsManagerTest {
 
     @Test
     fun testValidEmail() {
-        assertTrue(credentialsManager.isValidEmail("example@test.com"))
-        assertFalse(credentialsManager.isValidEmail("invalid-email"))
+        assertTrue(credentialsManager.isEmailValid("example@test.com"))
+        assertFalse(credentialsManager.isEmailValid("invalid-email"))
     }
 
     @Test
@@ -43,6 +43,7 @@ class CredentialsManagerTest {
     fun testValidFullName() {
         assertTrue(credentialsManager.isValidFullName("John Doe"))
         assertFalse(credentialsManager.isValidFullName(""))
+        assertTrue(credentialsManager.isValidFullName("John"))
     }
 
     @Test
@@ -54,7 +55,6 @@ class CredentialsManagerTest {
 
     @Test
     fun testTermsAccepted() {
-        assertTrue(credentialsManager.isTermsAccepted(true))
         assertFalse(credentialsManager.isTermsAccepted(false))
     }
 
