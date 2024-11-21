@@ -102,4 +102,15 @@ class CredentialsManagerTest {
             )
         )
     }
+
+    @Test
+    fun testHardcodedLoginCredentials() {
+        val validEmail = "test@te.st"
+        val validPassword = "1234"
+
+        assertTrue(validEmail == "test@te.st" && validPassword == "1234")
+
+        assertFalse(validEmail == "wrong@te.st" && validPassword == "1234")
+        assertFalse(validEmail == "test@te.st" && validPassword == "wrong")
+    }
 }

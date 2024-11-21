@@ -11,4 +11,5 @@
     <string name="success_signed_in">Signed in</string>
     <string name="error_name_required">Full Name is required</string>
     <string name="error_phone_number_required">Phone number must be at least 10 digits</string>
+    <string name="error_invalid_credentials">Invalid credentials</string>
 </resources>
