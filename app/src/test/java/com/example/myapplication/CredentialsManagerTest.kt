@@ -4,7 +4,7 @@ import org.junit.Test
 
 class CredentialsManagerTest {
 
-    private val credentialsManager = CredentialsManager()
+    private val credentialsManager = CredentialsManager
 
     @Test
     fun testValidEmail() {
@@ -16,6 +16,15 @@ class CredentialsManagerTest {
     fun testValidPassword() {
         assertTrue(credentialsManager.isValidPassword("password123"))
         assertFalse(credentialsManager.isValidPassword("short"))
+    }
+
+    @Test
+    fun testEmailAlreadyUsed() {
+        credentialsManager.registerUser("test@test.com")
+
+        assertTrue(credentialsManager.isEmailAlreadyUsed("test@test.com"))
+        assertTrue(credentialsManager.isEmailAlreadyUsed("TEST@TEST.COM"))
+        assertFalse(credentialsManager.isEmailAlreadyUsed("new@test.com"))
     }
 
     @Test

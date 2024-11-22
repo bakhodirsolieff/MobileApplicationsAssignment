@@ -1,6 +1,7 @@
 package com.example.myapplication
 
-class CredentialsManager {
+object CredentialsManager {
+
     private val emailPattern = ("[a-zA-Z0-9\\+\\%\\-\\+]{1,256}" +
             "\\@" +
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,64}" +
@@ -9,8 +10,18 @@ class CredentialsManager {
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,25}" +
             ")+").toRegex()
 
+    private val registeredEmails = mutableSetOf<String>()
+
     fun isEmailValid(email: String): Boolean {
         return email.matches(emailPattern)
+    }
+
+    fun isEmailAlreadyUsed(email: String): Boolean {
+        return registeredEmails.contains(email.lowercase())
+    }
+
+    fun registerUser(email: String) {
+        registeredEmails.add(email.lowercase())
     }
 
     fun isValidPassword(password: String): Boolean {

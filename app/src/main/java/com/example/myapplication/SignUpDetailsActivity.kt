@@ -12,7 +12,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class SignUpDetailsActivity : AppCompatActivity() {
 
-    private val credentialsManager: CredentialsManager = CredentialsManager()
+    private val credentialsManager = CredentialsManager
 
     private val fullNameField: TextInputEditText
         get() = findViewById(R.id.fullName)
@@ -103,18 +103,27 @@ class SignUpDetailsActivity : AppCompatActivity() {
         password: String,
         isTermsAccepted: Boolean
     ) {
+        if (credentialsManager.isEmailAlreadyUsed(email)) {
+            setError(emailLayout, getString(R.string.error_email_already_used))
+            return
+        }
+
         if (credentialsManager.ValidateCredentialsForSignUp(
-                fullName,
-                email,
-                phone,
-                password,
-                isTermsAccepted
+                fullName, email, phone, password, isTermsAccepted
             )
         ) {
-            showToast(getString(R.string.success_signed_in))
+            credentialsManager.registerUser(email)
+            showToast(getString(R.string.success_registration))
+            navigateToLogin()
         } else {
             showToast(getString(R.string.error_invalid_credentials))
         }
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(this, CreateAccountActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun setError(layout: TextInputLayout, message: String) {

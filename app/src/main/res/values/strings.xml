@@ -12,4 +12,6 @@
     <string name="error_name_required">Full Name is required</string>
     <string name="error_phone_number_required">Phone number must be at least 10 digits</string>
     <string name="error_invalid_credentials">Invalid credentials</string>
+    <string name="error_email_already_used">This email is already registered</string>
+    <string name="success_registration">Registration successful</string>
 </resources>

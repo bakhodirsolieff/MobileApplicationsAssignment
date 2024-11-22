@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class CreateAccountActivity : AppCompatActivity() {
-    private val credentialsManager: CredentialsManager = CredentialsManager()
+    private val credentialsManager = CredentialsManager
 
     private val emailField: TextInputEditText
         get() = findViewById(R.id.etEmail)
