@@ -10,22 +10,30 @@ object CredentialsManager {
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,25}" +
             ")+").toRegex()
 
-    private val registeredEmails = mutableSetOf<String>()
+    private val registeredUsers = mutableMapOf<String, String>()
 
     fun isEmailValid(email: String): Boolean {
         return email.matches(emailPattern)
     }
 
     fun isEmailAlreadyUsed(email: String): Boolean {
-        return registeredEmails.contains(email.lowercase())
-    }
-
-    fun registerUser(email: String) {
-        registeredEmails.add(email.lowercase())
+        return registeredUsers.containsKey(email.lowercase())
     }
 
     fun isValidPassword(password: String): Boolean {
         return password.length >= 8
+    }
+
+    fun registerUser(email: String, password: String): Boolean {
+        if (isEmailAlreadyUsed(email)) {
+            return false
+        }
+        registeredUsers[email.lowercase()] = password
+        return true
+    }
+
+    fun validateLogin(email: String, password: String): Boolean {
+        return registeredUsers[email.lowercase()] == password
     }
 
     fun validateCredentials(email: String, password: String, isCheckboxChecked: Boolean): Boolean {

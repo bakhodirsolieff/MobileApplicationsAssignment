@@ -68,55 +68,46 @@ class SignUpDetailsActivity : AppCompatActivity() {
         clearError(phoneLayout)
         clearError(passwordLayout)
 
-        if (fullName.isEmpty()) {
-            setError(fullNameLayout, getString(R.string.error_name_required))
+        if (!credentialsManager.ValidateCredentialsForSignUp(
+                fullName,
+                email,
+                phone,
+                password,
+                isTermsAccepted
+            )
+        ) {
+            if (!credentialsManager.isValidFullName(fullName)) {
+                setError(fullNameLayout, getString(R.string.error_name_required))
+            }
+            if (!credentialsManager.isEmailValid(email)) {
+                setError(emailLayout, getString(R.string.error_invalid_email))
+            }
+            if (!credentialsManager.isValidPhoneNumber(phone)) {
+                setError(phoneLayout, getString(R.string.error_phone_number_required))
+            }
+            if (!credentialsManager.isValidPassword(password)) {
+                setError(passwordLayout, getString(R.string.error_password_invalid))
+            }
+            if (!isTermsAccepted) {
+                showToast(getString(R.string.error_terms_and_conditions_required))
+            }
             return
         }
 
-        if (email.isEmpty() || !credentialsManager.isEmailValid(email)) {
-            setError(emailLayout, getString(R.string.error_invalid_email))
-            return
-        }
-
-        if (phone.isEmpty() || !credentialsManager.isValidPhoneNumber(phone)) {
-            setError(phoneLayout, getString(R.string.error_phone_number_required))
-            return
-        }
-
-        if (password.isEmpty() || !credentialsManager.isValidPassword(password)) {
-            setError(passwordLayout, getString(R.string.error_password_invalid))
-            return
-        }
-
-        if (!isTermsAccepted) {
-            showToast(getString(R.string.error_terms_and_conditions_required))
-            return
-        }
-
-        proceedToNextStep(fullName, email, phone, password, isTermsAccepted)
+        proceedToNextStep(email, password)
     }
 
-    private fun proceedToNextStep(
-        fullName: String,
-        email: String,
-        phone: String,
-        password: String,
-        isTermsAccepted: Boolean
-    ) {
+    private fun proceedToNextStep(email: String, password: String) {
         if (credentialsManager.isEmailAlreadyUsed(email)) {
             setError(emailLayout, getString(R.string.error_email_already_used))
             return
         }
 
-        if (credentialsManager.ValidateCredentialsForSignUp(
-                fullName, email, phone, password, isTermsAccepted
-            )
-        ) {
-            credentialsManager.registerUser(email)
+        if (credentialsManager.registerUser(email, password)) {
             showToast(getString(R.string.success_registration))
             navigateToLogin()
         } else {
-            showToast(getString(R.string.error_invalid_credentials))
+            setError(emailLayout, getString(R.string.error_email_already_used))
         }
     }
 

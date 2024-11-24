@@ -19,15 +19,6 @@ class CredentialsManagerTest {
     }
 
     @Test
-    fun testEmailAlreadyUsed() {
-        credentialsManager.registerUser("test@test.com")
-
-        assertTrue(credentialsManager.isEmailAlreadyUsed("test@test.com"))
-        assertTrue(credentialsManager.isEmailAlreadyUsed("TEST@TEST.COM"))
-        assertFalse(credentialsManager.isEmailAlreadyUsed("new@test.com"))
-    }
-
-    @Test
     fun testValidateCredentials() {
         // Valid email, password, and checkbox checked
         assertTrue(credentialsManager.validateCredentials("example@test.com", "password123", true))
@@ -121,5 +112,27 @@ class CredentialsManagerTest {
 
         assertFalse(validEmail == "wrong@te.st" && validPassword == "1234")
         assertFalse(validEmail == "test@te.st" && validPassword == "wrong")
+    }
+
+    @Test
+    fun testRegisterUser() {
+        val email = "newuser@test.com"
+        val password = "strongPassword123"
+
+        assertTrue(credentialsManager.registerUser(email, password))
+        assertFalse(credentialsManager.registerUser(email, password))
+        assertTrue(credentialsManager.isEmailAlreadyUsed(email))
+    }
+
+    @Test
+    fun testValidateLogin() {
+        val email = "login@test.com"
+        val password = "loginPassword123"
+
+        credentialsManager.registerUser(email, password)
+
+        assertTrue(credentialsManager.validateLogin(email, password))
+        assertFalse(credentialsManager.validateLogin(email, "wrongPassword"))
+        assertFalse(credentialsManager.validateLogin("wrongEmail@test.com", password))
     }
 }
