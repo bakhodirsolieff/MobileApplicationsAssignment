@@ -21,20 +21,19 @@ class CredentialsManagerTest {
     @Test
     fun testValidateCredentials() {
         // Valid email, password, and checkbox checked
-        assertTrue(credentialsManager.validateCredentials("example@test.com", "password123", true))
+        assertTrue(credentialsManager.validateCredentials("example@test.com", "password123"))
 
         // Invalid email
-        assertFalse(credentialsManager.validateCredentials("invalid-email", "password123", true))
+        assertFalse(credentialsManager.validateCredentials("invalid-email", "password123"))
 
         // Invalid password
-        assertFalse(credentialsManager.validateCredentials("example@test.com", "short", true))
+        assertFalse(credentialsManager.validateCredentials("example@test.com", "short"))
 
         // Checkbox not checked
         assertFalse(
             credentialsManager.validateCredentials(
                 "example@test.com",
-                "password123",
-                false
+                "password123"
             )
         )
     }
@@ -62,42 +61,42 @@ class CredentialsManagerTest {
     fun testValidateCredentialsForSignUp() {
         // Valid full name, email, phone, password, and checkbox checked
         assertTrue(
-            credentialsManager.ValidateCredentialsForSignUp(
+            credentialsManager.validateCredentialsForSignUp(
                 "John Doe", "example@test.com", "1234567890", "password123", true
             )
         )
 
         // Invalid full name
         assertFalse(
-            credentialsManager.ValidateCredentialsForSignUp(
+            credentialsManager.validateCredentialsForSignUp(
                 "", "example@test.com", "1234567890", "password123", true
             )
         )
 
         // Invalid email
         assertFalse(
-            credentialsManager.ValidateCredentialsForSignUp(
+            credentialsManager.validateCredentialsForSignUp(
                 "John Doe", "invalid-email", "1234567890", "password123", true
             )
         )
 
         // Invalid phone number
         assertFalse(
-            credentialsManager.ValidateCredentialsForSignUp(
+            credentialsManager.validateCredentialsForSignUp(
                 "John Doe", "example@test.com", "12345", "password123", true
             )
         )
 
         // Invalid password
         assertFalse(
-            credentialsManager.ValidateCredentialsForSignUp(
+            credentialsManager.validateCredentialsForSignUp(
                 "John Doe", "example@test.com", "1234567890", "short", true
             )
         )
 
         // Checkbox not checked
         assertFalse(
-            credentialsManager.ValidateCredentialsForSignUp(
+            credentialsManager.validateCredentialsForSignUp(
                 "John Doe", "example@test.com", "1234567890", "password123", false
             )
         )

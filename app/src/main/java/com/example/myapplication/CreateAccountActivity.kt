@@ -70,7 +70,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
             !isRememberMeChecked -> showToast(getString(R.string.error_remember_me_required))
 
-            credentialsManager.validateCredentials(email, password, isRememberMeChecked) -> {
+            credentialsManager.validateCredentials(email, password) -> {
                 showToast(getString(R.string.success_signed_in))
             }
 

@@ -36,8 +36,8 @@ object CredentialsManager {
         return registeredUsers[email.lowercase()] == password
     }
 
-    fun validateCredentials(email: String, password: String, isCheckboxChecked: Boolean): Boolean {
-        return isEmailValid(email) && isValidPassword(password) && isCheckboxChecked
+    fun validateCredentials(email: String, password: String): Boolean {
+        return isEmailValid(email) && isValidPassword(password)
     }
 
     fun isValidFullName(fullName: String): Boolean {
@@ -59,7 +59,7 @@ object CredentialsManager {
         return isChecked
     }
 
-    fun ValidateCredentialsForSignUp(
+    fun validateCredentialsForSignUp(
         fullName: String,
         email: String,
         phoneNumber: String,

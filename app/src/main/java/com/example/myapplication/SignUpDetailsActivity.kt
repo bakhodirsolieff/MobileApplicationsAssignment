@@ -68,7 +68,7 @@ class SignUpDetailsActivity : AppCompatActivity() {
         clearError(phoneLayout)
         clearError(passwordLayout)
 
-        if (!credentialsManager.ValidateCredentialsForSignUp(
+        if (!credentialsManager.validateCredentialsForSignUp(
                 fullName,
                 email,
                 phone,
@@ -94,10 +94,10 @@ class SignUpDetailsActivity : AppCompatActivity() {
             return
         }
 
-        proceedToNextStep(email, password)
+        registerUserAndNavigate(email, password)
     }
 
-    private fun proceedToNextStep(email: String, password: String) {
+    private fun registerUserAndNavigate(email: String, password: String) {
         if (credentialsManager.isEmailAlreadyUsed(email)) {
             setError(emailLayout, getString(R.string.error_email_already_used))
             return
@@ -106,8 +106,6 @@ class SignUpDetailsActivity : AppCompatActivity() {
         if (credentialsManager.registerUser(email, password)) {
             showToast(getString(R.string.success_registration))
             navigateToLogin()
-        } else {
-            setError(emailLayout, getString(R.string.error_email_already_used))
         }
     }
 
