@@ -48,82 +48,72 @@ class SignUpDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_page)
 
-        nextButton.setOnClickListener { handleNextButtonClick() }
-        val loginButton = findViewById<TextView>(R.id.tvRegisterNow)
-        loginButton.setOnClickListener {
-            val goToCreateAccount = Intent(this, CreateAccountActivity::class.java)
-            startActivity(goToCreateAccount)
+        nextButton.setOnClickListener { onNextButtonClick() }
+
+        findViewById<TextView>(R.id.tvRegisterNow).setOnClickListener {
+            startActivity(Intent(this, CreateAccountActivity::class.java))
         }
     }
 
-    private fun handleNextButtonClick() {
+    private fun onNextButtonClick() {
         val fullName = fullNameField.text.toString().trim()
         val email = emailField.text.toString().trim()
         val phone = phoneField.text.toString().trim()
         val password = passwordField.text.toString().trim()
         val isTermsAccepted = termsCheckBox.isChecked
 
-        clearError(fullNameLayout)
-        clearError(emailLayout)
-        clearError(phoneLayout)
-        clearError(passwordLayout)
+        clearAllErrors()
 
-        if (!credentialsManager.validateCredentialsForSignUp(
-                fullName,
-                email,
-                phone,
-                password,
-                isTermsAccepted
+        when {
+            !credentialsManager.isValidFullName(fullName) -> setError(
+                fullNameLayout,
+                R.string.error_name_required
             )
-        ) {
-            if (!credentialsManager.isValidFullName(fullName)) {
-                setError(fullNameLayout, getString(R.string.error_name_required))
-            }
-            if (!credentialsManager.isEmailValid(email)) {
-                setError(emailLayout, getString(R.string.error_invalid_email))
-            }
-            if (!credentialsManager.isValidPhoneNumber(phone)) {
-                setError(phoneLayout, getString(R.string.error_phone_number_required))
-            }
-            if (!credentialsManager.isValidPassword(password)) {
-                setError(passwordLayout, getString(R.string.error_password_invalid))
-            }
-            if (!isTermsAccepted) {
-                showToast(getString(R.string.error_terms_and_conditions_required))
-            }
-            return
-        }
 
-        registerUserAndNavigate(email, password)
-    }
+            !credentialsManager.isEmailValid(email) -> setError(
+                emailLayout,
+                R.string.error_invalid_email
+            )
 
-    private fun registerUserAndNavigate(email: String, password: String) {
-        if (credentialsManager.isEmailAlreadyUsed(email)) {
-            setError(emailLayout, getString(R.string.error_email_already_used))
-            return
-        }
+            !credentialsManager.isValidPhoneNumber(phone) -> setError(
+                phoneLayout,
+                R.string.error_phone_number_required
+            )
 
-        if (credentialsManager.registerUser(email, password)) {
-            showToast(getString(R.string.success_registration))
-            navigateToLogin()
+            !credentialsManager.isValidPassword(password) -> setError(
+                passwordLayout,
+                R.string.error_password_invalid
+            )
+
+            !isTermsAccepted -> showToast(R.string.error_terms_and_conditions_required)
+            credentialsManager.isEmailAlreadyUsed(email) -> setError(
+                emailLayout,
+                R.string.error_email_already_used
+            )
+
+            else -> registerUserAndProceed(email, password)
         }
     }
 
-    private fun navigateToLogin() {
-        val intent = Intent(this, CreateAccountActivity::class.java)
-        startActivity(intent)
+    private fun registerUserAndProceed(email: String, password: String) {
+        credentialsManager.registerUser(email, password)
+        showToast(R.string.success_registration)
+        startActivity(Intent(this, CreateAccountActivity::class.java))
         finish()
     }
 
-    private fun setError(layout: TextInputLayout, message: String) {
-        layout.error = message
+    private fun setError(layout: TextInputLayout, errorResId: Int?) {
+        layout.error = errorResId?.let { getString(it) }
     }
 
-    private fun clearError(layout: TextInputLayout) {
-        layout.error = null
+    private fun clearAllErrors() {
+        setError(fullNameLayout, null)
+        setError(emailLayout, null)
+        setError(phoneLayout, null)
+        setError(passwordLayout, null)
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun showToast(messageResId: Int) {
+        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 }
