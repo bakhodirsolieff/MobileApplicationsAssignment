@@ -3,7 +3,6 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -28,9 +27,6 @@ class CreateAccountActivity : AppCompatActivity() {
     private val nextButton: Button
         get() = findViewById(R.id.btnNext)
 
-    private val rememberMeCheckbox: CheckBox
-        get() = findViewById(R.id.cbRememberMe)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -45,7 +41,6 @@ class CreateAccountActivity : AppCompatActivity() {
     private fun onNextButtonClick() {
         val email = emailField.text.toString().trim()
         val password = passwordField.text.toString().trim()
-        val isRememberMeChecked = rememberMeCheckbox.isChecked
 
         clearAllErrors()
 
@@ -62,7 +57,6 @@ class CreateAccountActivity : AppCompatActivity() {
                 R.string.error_password_invalid
             )
 
-            !isRememberMeChecked -> showToast(R.string.error_remember_me_required)
             credentialsManager.isHardcodedCredentials(email, password) -> navigateToMainActivity()
             credentialsManager.validateCredentials(
                 email,
