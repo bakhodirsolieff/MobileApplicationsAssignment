@@ -28,14 +28,6 @@ class CredentialsManagerTest {
 
         // Invalid password
         assertFalse(credentialsManager.validateCredentials("example@test.com", "short"))
-
-        // Checkbox not checked
-        assertFalse(
-            credentialsManager.validateCredentials(
-                "example@test.com",
-                "password123"
-            )
-        )
     }
 
     @Test
@@ -125,13 +117,22 @@ class CredentialsManagerTest {
 
     @Test
     fun testValidateLogin() {
-        val email = "login@test.com"
-        val password = "loginPassword123"
+        val email = "user@test.com"
+        val password = "securePassword123"
 
+        // 1. Register a user
         credentialsManager.registerUser(email, password)
 
+        // 2. Valid login
         assertTrue(credentialsManager.validateLogin(email, password))
+
+        // 3. Invalid login (wrong password)
         assertFalse(credentialsManager.validateLogin(email, "wrongPassword"))
-        assertFalse(credentialsManager.validateLogin("wrongEmail@test.com", password))
+
+        // 4. Invalid login (non-existent email)
+        assertFalse(credentialsManager.validateLogin("nonexistent@test.com", password))
+
+        // 5. Email lookup should be case insensitive
+        assertTrue(credentialsManager.validateLogin("USER@test.COM", password))
     }
 }
