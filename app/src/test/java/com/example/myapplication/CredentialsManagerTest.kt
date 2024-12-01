@@ -29,7 +29,6 @@ class CredentialsManagerTest {
         // Invalid password
         assertFalse(credentialsManager.validateCredentials("example@test.com", "short"))
 
-        // Checkbox not checked
         assertFalse(
             credentialsManager.validateCredentials(
                 "example@test.com",
