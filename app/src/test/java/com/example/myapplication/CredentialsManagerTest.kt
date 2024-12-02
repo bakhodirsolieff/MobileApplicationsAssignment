@@ -20,7 +20,7 @@ class CredentialsManagerTest {
 
     @Test
     fun testValidateCredentials() {
-        // Valid email, password, and checkbox checked
+        // Valid email, password
         assertTrue(credentialsManager.validateCredentials("example@test.com", "password123"))
 
         // Invalid email
