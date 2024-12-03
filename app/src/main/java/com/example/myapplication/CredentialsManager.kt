@@ -1,6 +1,7 @@
 package com.example.myapplication
 
-class CredentialsManager {
+object CredentialsManager {
+
     private val emailPattern = ("[a-zA-Z0-9\\+\\%\\-\\+]{1,256}" +
             "\\@" +
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,64}" +
@@ -9,16 +10,34 @@ class CredentialsManager {
             "[a-zA-Z0-9][0-zA-Z0-9\\-]{0,25}" +
             ")+").toRegex()
 
+    private val registeredUsers = mutableMapOf<String, String>()
+
     fun isEmailValid(email: String): Boolean {
         return email.matches(emailPattern)
+    }
+
+    fun isEmailAlreadyUsed(email: String): Boolean {
+        return registeredUsers.containsKey(email.lowercase())
     }
 
     fun isValidPassword(password: String): Boolean {
         return password.length >= 8
     }
 
-    fun validateCredentials(email: String, password: String, isCheckboxChecked: Boolean): Boolean {
-        return isEmailValid(email) && isValidPassword(password) && isCheckboxChecked
+    fun registerUser(email: String, password: String): Boolean {
+        if (isEmailAlreadyUsed(email)) {
+            return false
+        }
+        registeredUsers[email.lowercase()] = password
+        return true
+    }
+
+    fun validateLogin(email: String, password: String): Boolean {
+        return registeredUsers[email.lowercase()] == password
+    }
+
+    fun validateCredentials(email: String, password: String): Boolean {
+        return isEmailValid(email) && isValidPassword(password)
     }
 
     fun isValidFullName(fullName: String): Boolean {
@@ -40,7 +59,7 @@ class CredentialsManager {
         return isChecked
     }
 
-    fun ValidateCredentialsForSignUp(
+    fun validateCredentialsForSignUp(
         fullName: String,
         email: String,
         phoneNumber: String,
