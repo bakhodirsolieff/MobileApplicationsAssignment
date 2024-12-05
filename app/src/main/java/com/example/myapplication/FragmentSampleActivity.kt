@@ -19,7 +19,7 @@ class FragmentSampleActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        findViewById<View>(R.id.changeButton).setOnClickListener {
+        findViewById<View>(R.id.change_button).setOnClickListener {
             supportFragmentManager.commit {
                 val currentFragment = supportFragmentManager.findFragmentById(
                     R.id.fragment_container_view
