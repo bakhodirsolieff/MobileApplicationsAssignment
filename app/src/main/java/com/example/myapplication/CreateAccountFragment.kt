@@ -2,40 +2,44 @@ package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class CreateAccountActivity : AppCompatActivity() {
+class CreateAccountFragment : Fragment() {
     private val credentialsManager = CredentialsManager
 
-    private val emailField: TextInputEditText
-        get() = findViewById(R.id.etEmail)
+    private lateinit var emailField: TextInputEditText
+    private lateinit var emailLayout: TextInputLayout
+    private lateinit var passwordField: TextInputEditText
+    private lateinit var passwordLayout: TextInputLayout
+    private lateinit var nextButton: Button
 
-    private val emailLayout: TextInputLayout
-        get() = findViewById(R.id.textInputEmail)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_create_account, container, false)
 
-    private val passwordField: TextInputEditText
-        get() = findViewById(R.id.etPassword)
-
-    private val passwordLayout: TextInputLayout
-        get() = findViewById(R.id.textInputPassword)
-
-    private val nextButton: Button
-        get() = findViewById(R.id.btnNext)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_account)
+        emailField = view.findViewById(R.id.etEmail)
+        emailLayout = view.findViewById(R.id.textInputEmail)
+        passwordField = view.findViewById(R.id.etPassword)
+        passwordLayout = view.findViewById(R.id.textInputPassword)
+        nextButton = view.findViewById(R.id.btnNext)
 
         nextButton.setOnClickListener { onNextButtonClick() }
 
-        findViewById<TextView>(R.id.tvRegisterNoww).setOnClickListener {
-            startActivity(Intent(this, SignUpDetailsActivity::class.java))
+        view.findViewById<TextView>(R.id.tvRegisterNoww).setOnClickListener {
+            navigateToSignUpDetailsFragment()
         }
+
+        return view
     }
 
     private fun onNextButtonClick() {
@@ -67,8 +71,8 @@ class CreateAccountActivity : AppCompatActivity() {
         }
     }
 
-    private fun setError(layout: TextInputLayout, errorResId: Int) {
-        layout.error = getString(errorResId)
+    private fun setError(layout: TextInputLayout, errorResId: Int?) {
+        layout.error = errorResId?.let { getString(it) }
     }
 
     private fun clearAllErrors() {
@@ -76,16 +80,22 @@ class CreateAccountActivity : AppCompatActivity() {
         setError(passwordLayout, null)
     }
 
-    private fun setError(layout: TextInputLayout, errorResId: Int?) {
-        layout.error = errorResId?.let { getString(it) }
-    }
-
     private fun showToast(messageResId: Int) {
-        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToMainActivity() {
         showToast(R.string.success_signed_in)
-        startActivity(Intent(this, MainActivity::class.java))
+
+        val intent = Intent(requireContext(), MainFragment::class.java)
+        startActivity(intent)
+        activity?.finish()
+    }
+
+    private fun navigateToSignUpDetailsFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, SignUpDetailsFragment())
+            .addToBackStack(null)
+            .commit()
     }
 }

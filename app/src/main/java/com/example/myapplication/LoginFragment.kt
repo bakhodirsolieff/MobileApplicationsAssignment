@@ -30,7 +30,7 @@ class LoginFragment(val credentialsManager : CredentialsManager) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_create_account, container, false)
+        val view = inflater.inflate(R.layout.fragment_create_account, container, false)
         return view
     }
 
