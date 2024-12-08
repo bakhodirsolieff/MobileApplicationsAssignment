@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -61,13 +61,15 @@ class CreateAccountFragment : Fragment() {
                 R.string.error_password_invalid
             )
 
-            credentialsManager.isHardcodedCredentials(email, password) -> navigateToMainActivity()
-            credentialsManager.validateCredentials(
-                email,
-                password
-            ) -> showToast(R.string.success_signed_in)
-
-            else -> showToast(R.string.error_invalid_credentials)
+            else -> {
+                if (credentialsManager.isHardcodedCredentials(email, password) ||
+                    credentialsManager.validateCredentials(email, password)
+                ) {
+                    navigateToMainFragment()
+                } else {
+                    showToast(R.string.error_invalid_credentials)
+                }
+            }
         }
     }
 
@@ -84,12 +86,11 @@ class CreateAccountFragment : Fragment() {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
-    private fun navigateToMainActivity() {
+    private fun navigateToMainFragment() {
         showToast(R.string.success_signed_in)
-
-        val intent = Intent(requireContext(), MainFragment::class.java)
-        startActivity(intent)
-        activity?.finish()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView, MainFragment())
+            .commit()
     }
 
     private fun navigateToSignUpDetailsFragment() {

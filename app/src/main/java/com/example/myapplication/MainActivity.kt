@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, CreateAccountFragment(), CreateAccountFragment::class.java.simpleName)
+                .replace(R.id.fragmentContainerView, CreateAccountFragment())
                 .commit()
         }
     }
