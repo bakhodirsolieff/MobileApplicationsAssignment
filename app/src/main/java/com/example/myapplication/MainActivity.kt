@@ -1,17 +1,17 @@
 package com.example.myapplication
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity()  {
-/*Create new Account
-    Correct Input values
-        Password (8 charachteers/digits)
-        Email Format
-    Email already used - Error
-    Successful registration (new user is present in CredManager)
-    Case Insensitive in email
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-    Apply it to SignUpDetailsActivity
-    After successful registration, go to CreateAccount activity
-    */
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView, CreateAccountFragment())
+                .commit()
+        }
+    }
 }
