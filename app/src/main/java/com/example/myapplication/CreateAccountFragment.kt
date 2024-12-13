@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -62,10 +63,8 @@ class CreateAccountFragment : Fragment() {
             )
 
             else -> {
-                if (credentialsManager.isHardcodedCredentials(email, password) ||
-                    credentialsManager.validateCredentials(email, password)
-                ) {
-                    navigateToMainFragment()
+                if (CredentialsManager.validateCredentials(email, password)) {
+                    navigateToMainActivity(email, password)
                 } else {
                     showToast(R.string.error_invalid_credentials)
                 }
@@ -86,11 +85,21 @@ class CreateAccountFragment : Fragment() {
         Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
-    private fun navigateToMainFragment() {
-        showToast(R.string.success_signed_in)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, MainFragment())
-            .commit()
+    private fun navigateToMainActivity(email: String, password: String) {
+        val sharedPreferences =
+            requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("is_logged_in", true)
+        editor.putString("email", email)
+        editor.putString("password", password)
+        editor.apply()
+
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            putExtra("email", email)
+            putExtra("password", password)
+        }
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun navigateToSignUpDetailsFragment() {
