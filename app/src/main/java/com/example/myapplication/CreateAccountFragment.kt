@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class CreateAccountFragment : Fragment() {
+
     private val credentialsManager = CredentialsManager
 
     private lateinit var emailField: TextInputEditText
@@ -86,13 +87,8 @@ class CreateAccountFragment : Fragment() {
     }
 
     private fun navigateToMainActivity(email: String, password: String) {
-        val sharedPreferences =
-            requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("is_logged_in", true)
-        editor.putString("email", email)
-        editor.putString("password", password)
-        editor.apply()
+        credentialsManager.setLoggedIn(requireContext(), true)
+        credentialsManager.saveUserCredentials(requireContext(), email, password)
 
         val intent = Intent(requireContext(), MainActivity::class.java).apply {
             putExtra("email", email)

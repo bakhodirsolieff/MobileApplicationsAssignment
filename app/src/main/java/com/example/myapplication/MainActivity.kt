@@ -1,14 +1,11 @@
 package com.example.myapplication
 
+import com.example.myapplication.RecipeAdapter
+import com.example.myapplication.Recipe
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,32 +17,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false)
+        val isLoggedIn = CredentialsManager.isLoggedIn(this)
 
         if (isLoggedIn) {
             loadMainContent()
         } else {
             if (savedInstanceState == null) {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView, CreateAccountFragment())
-                    .commit()
+                navigateToCreateAccountFragment()
             }
         }
-        val logoutButton: Button = findViewById(R.id.logoutButton)
-        logoutButton.setOnClickListener {
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("is_logged_in", false)
-            editor.apply()
 
-            navigateToCreateAccountFragment()
-
-            findViewById<RecyclerView>(R.id.recyclerView).visibility = View.GONE
-            findViewById<Button>(R.id.logoutButton).visibility = View.GONE
-        }
+        setupLogoutButton()
     }
 
-    fun loadMainContent() {
+    private fun loadMainContent() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -76,50 +61,20 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
+    private fun setupLogoutButton() {
+        val logoutButton: Button = findViewById(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            CredentialsManager.setLoggedIn(this, false)
+            navigateToCreateAccountFragment()
+
+            findViewById<RecyclerView>(R.id.recyclerView).visibility = View.GONE
+            logoutButton.visibility = View.GONE
+        }
+    }
+
     private fun navigateToCreateAccountFragment() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, CreateAccountFragment())
             .commit()
     }
-}
-
-data class Recipe(
-    val id: Int,
-    val title: String,
-    val imageResId: Int
-)
-
-class RecipeAdapter(
-    private val recipes: List<Recipe>,
-    private val itemClickListener: (Recipe) -> Unit,
-    private val likeClickListener: (Recipe) -> Unit,
-    private val shareClickListener: (Recipe) -> Unit
-) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
-
-    inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val image: ImageView = itemView.findViewById(R.id.image)
-        private val title: TextView = itemView.findViewById(R.id.title)
-        private val btnLike: ImageButton = itemView.findViewById(R.id.btn_like)
-        private val btnShare: ImageButton = itemView.findViewById(R.id.btn_share)
-
-        fun bind(recipe: Recipe) {
-            image.setImageResource(recipe.imageResId)
-            title.text = recipe.title
-
-            itemView.setOnClickListener { itemClickListener(recipe) }
-            btnLike.setOnClickListener { likeClickListener(recipe) }
-            btnShare.setOnClickListener { shareClickListener(recipe) }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe, parent, false)
-        return RecipeViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        holder.bind(recipes[position])
-    }
-
-    override fun getItemCount(): Int = recipes.size
 }
