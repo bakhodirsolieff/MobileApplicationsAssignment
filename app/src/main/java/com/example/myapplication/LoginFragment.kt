@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 
-class LoginFragment(val credentialsManager : CredentialsManager) : Fragment() {
+class LoginFragment(private val credentialsManager: CredentialsManager) : Fragment() {
 
     private var listener: EventsListener? = null
 
@@ -18,10 +18,9 @@ class LoginFragment(val credentialsManager : CredentialsManager) : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        require(
-            context is EventsListener,
-            { "Activity holding fragment must implement its EventsInterface " }
-        )
+        require(context is EventsListener) {
+            "Activity holding fragment must implement its EventsInterface"
+        }
         listener = context
     }
 
@@ -30,8 +29,7 @@ class LoginFragment(val credentialsManager : CredentialsManager) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_create_account, container, false)
-        return view
+        return inflater.inflate(R.layout.fragment_create_account, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

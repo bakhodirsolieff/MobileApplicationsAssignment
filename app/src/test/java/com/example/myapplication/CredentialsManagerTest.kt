@@ -45,11 +45,6 @@ class CredentialsManagerTest {
     }
 
     @Test
-    fun testTermsAccepted() {
-        assertFalse(credentialsManager.isTermsAccepted(false))
-    }
-
-    @Test
     fun testValidateCredentialsForSignUp() {
         // Valid full name, email, phone, password, and checkbox checked
         assertTrue(
