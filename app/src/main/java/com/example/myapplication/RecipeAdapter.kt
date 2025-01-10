@@ -1,11 +1,12 @@
-package com.example.myapplication
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
+import com.example.myapplication.Recipe
+import com.example.myapplication.RecipeViewHolder
 
 class RecipeAdapter(
-    private val recipes: List<Recipe>,
+    private var recipes: List<Recipe>,
     private val itemClickListener: (Recipe) -> Unit,
     private val likeClickListener: (Recipe) -> Unit,
     private val shareClickListener: (Recipe) -> Unit
@@ -21,4 +22,9 @@ class RecipeAdapter(
     }
 
     override fun getItemCount(): Int = recipes.size
+
+    fun updateRecipes(newRecipes: List<Recipe>) {
+        recipes = newRecipes
+        notifyDataSetChanged()
+    }
 }
