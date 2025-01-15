@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -62,10 +62,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        recipesViewModel.filterRecipes("")
     }
-
 
     private fun openRecipeDetail(recipe: Recipe) {
         val intent = Intent(this, RecipeDetailActivity::class.java).apply {
@@ -94,19 +91,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSearchView() {
-        val searchView = findViewById<SearchView>(R.id.search_view)
+        val searchView = findViewById<SearchView>(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    recipesViewModel.filterRecipes(it)
-                }
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    recipesViewModel.filterRecipes(it)
-                }
+                recipesViewModel.filterRecipes(newText.orEmpty())
                 return true
             }
         })
