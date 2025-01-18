@@ -14,4 +14,5 @@
     <string name="error_email_already_used">This email is already registered</string>
     <string name="success_registration">Registration successful</string>
     <string name="change_fragment">Change fragment</string>
+    <string name="Logout">Logout</string>
 </resources>

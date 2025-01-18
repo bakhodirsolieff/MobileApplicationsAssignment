@@ -1,26 +1,33 @@
 package com.example.myapplication
 
-import com.example.myapplication.RecipeAdapter
-import com.example.myapplication.Recipe
+import RecipeAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var recipeAdapter: RecipeAdapter
+    private val recipesViewModel: RecipesViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val isLoggedIn = CredentialsManager.isLoggedIn(this)
-
-        if (isLoggedIn) {
+        if (CredentialsManager.isLoggedIn(this)) {
             loadMainContent()
+            setupSearchView()
         } else {
             if (savedInstanceState == null) {
                 navigateToCreateAccountFragment()
@@ -34,21 +41,10 @@ class MainActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val recipes = listOf(
-            Recipe(1, "Takoyaki", R.drawable.takoyaki),
-            Recipe(2, "Tempura", R.drawable.tempura),
-            Recipe(3, "Ramen", R.drawable.ramen)
-        )
-
-        val adapter = RecipeAdapter(
-            recipes,
+        recipeAdapter = RecipeAdapter(
+            recipes = emptyList(),
             itemClickListener = { recipe ->
-                val intent = Intent(this, RecipeDetailActivity::class.java).apply {
-                    putExtra("RECIPE_ID", recipe.id)
-                    putExtra("RECIPE_TITLE", recipe.title)
-                    putExtra("RECIPE_IMAGE", recipe.imageResId)
-                }
-                startActivity(intent)
+                openRecipeDetail(recipe)
             },
             likeClickListener = { recipe ->
                 Toast.makeText(this, "Liked: ${recipe.title}", Toast.LENGTH_SHORT).show()
@@ -57,8 +53,24 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Shared: ${recipe.title}", Toast.LENGTH_SHORT).show()
             }
         )
+        recyclerView.adapter = recipeAdapter
 
-        recyclerView.adapter = adapter
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                recipesViewModel.recipes.collect { updatedRecipes ->
+                    recipeAdapter.updateRecipes(updatedRecipes)
+                }
+            }
+        }
+    }
+
+    private fun openRecipeDetail(recipe: Recipe) {
+        val intent = Intent(this, RecipeDetailActivity::class.java).apply {
+            putExtra("RECIPE_ID", recipe.id)
+            putExtra("RECIPE_TITLE", recipe.title)
+            putExtra("RECIPE_IMAGE", recipe.imageResId)
+        }
+        startActivity(intent)
     }
 
     private fun setupLogoutButton() {
@@ -76,5 +88,19 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerView, CreateAccountFragment())
             .commit()
+    }
+
+    private fun setupSearchView() {
+        val searchView = findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                recipesViewModel.filterRecipes(newText.orEmpty())
+                return true
+            }
+        })
     }
 }
