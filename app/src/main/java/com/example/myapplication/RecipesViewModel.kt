@@ -1,20 +1,25 @@
+@file:OptIn(FlowPreview::class)
+
 package com.example.myapplication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.allRecipes
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-@OptIn(kotlinx.coroutines.FlowPreview::class)
 class RecipesViewModel : ViewModel() {
 
-    private val _recipes = MutableStateFlow(allRecipes)
+    private val _recipes = MutableStateFlow<List<Recipe>>(allRecipes)
     val recipes: StateFlow<List<Recipe>> = _recipes.asStateFlow()
+
+    private val _uiState = MutableStateFlow<RecipesUiState>(RecipesUiState.Loading)
+    val uiState: StateFlow<RecipesUiState> = _uiState.asStateFlow()
 
     private val searchQuery = MutableStateFlow("")
 
@@ -22,23 +27,35 @@ class RecipesViewModel : ViewModel() {
         viewModelScope.launch {
             searchQuery
                 .debounce(300)
-                .map { query ->
-                    if (query.length < 3) {
+                .collect { query ->
+                    _uiState.value = RecipesUiState.Loading
+                    delay(1000)
+                    val filteredRecipes = if (query.length < 3) {
                         allRecipes
                     } else {
-                        allRecipes.filter { recipe ->
-                            recipe.title.contains(query, ignoreCase = true) ||
-                                    recipe.description.contains(query, ignoreCase = true)
+                        allRecipes.filter {
+                            it.title.contains(query, ignoreCase = true) ||
+                                    it.description.contains(query, ignoreCase = true)
                         }
                     }
-                }
-                .collect { filteredRecipes ->
+
                     _recipes.value = filteredRecipes
+                    if (filteredRecipes.isEmpty()) {
+                        _uiState.value = RecipesUiState.Error("No recipes found.")
+                    } else {
+                        _uiState.value = RecipesUiState.Success(filteredRecipes)
+                    }
                 }
         }
     }
 
-    fun filterRecipes(query: String) {
+    fun updateSearchQuery(query: String) {
         searchQuery.value = query
     }
+}
+
+sealed class RecipesUiState {
+    object Loading : RecipesUiState()
+    data class Success(val recipes: List<Recipe>) : RecipesUiState()
+    data class Error(val message: String) : RecipesUiState()
 }

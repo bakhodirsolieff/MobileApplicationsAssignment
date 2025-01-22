@@ -5,7 +5,7 @@ import android.content.Context
 object CredentialsManager {
 
     private const val PREFS_NAME = "user_prefs"
-    private const val KEY_IS_LOGGED_IN = "is_logged_in"
+    private const val KEY_LOGGED_IN = "logged_in"
     private const val KEY_EMAIL = "email"
     private const val KEY_PASSWORD = "password"
 
@@ -55,15 +55,6 @@ object CredentialsManager {
     private fun getSharedPreferences(context: Context) =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    fun isLoggedIn(context: Context): Boolean {
-        return getSharedPreferences(context).getBoolean(KEY_IS_LOGGED_IN, false)
-    }
-
-    fun setLoggedIn(context: Context, isLoggedIn: Boolean) {
-        getSharedPreferences(context).edit()
-            .putBoolean(KEY_IS_LOGGED_IN, isLoggedIn)
-            .apply()
-    }
 
     fun saveUserCredentials(context: Context, email: String, password: String) {
         getSharedPreferences(context).edit()
@@ -91,5 +82,17 @@ object CredentialsManager {
                 isValidPhoneNumber(phoneNumber) &&
                 isValidPassword(password) &&
                 isTermsAccepted
+    }
+
+    fun setLoggedIn(context: Context, isLoggedIn: Boolean) {
+        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(KEY_LOGGED_IN, isLoggedIn)
+        editor.apply()
+    }
+
+    fun isLoggedIn(context: Context): Boolean {
+        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean(KEY_LOGGED_IN, false)
     }
 }
